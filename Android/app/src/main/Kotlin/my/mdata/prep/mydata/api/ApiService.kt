@@ -8,6 +8,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import my.mdata.prep.mydata.api.ApiService.Companion.SUCCESS
 import my.mdata.prep.mydata.model.Model
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -27,6 +28,8 @@ interface ApiService {
     companion object {
 
         val BASE_URL: String = ""
+
+        val SUCCESS: Int = 1234
 
         fun create(): ApiService {
 
@@ -82,7 +85,7 @@ class RetrofitRequest(context: Context) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { result ->
-                            if ((result as Model.Result).response.RespCode != 1111) {
+                            if ((result as Model.Result).response.RespCode != SUCCESS) {
                                 listener?.onError(result.response.RespDesc)
                             } else {
                                 listener?.onResponse(result)
